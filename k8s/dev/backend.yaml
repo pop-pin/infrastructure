@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poppin-backend
+  namespace: poppin-dev
+  labels:
+    type: backend
+    app: poppin-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: backend
+      app: poppin-backend
+  template:
+    metadata:
+      labels:
+        type: backend
+        app: poppin-backend
+    spec:
+      containers:
+        - name: spring
+          image: poppinteam/backend-server:latest
+          ports:
+            - containerPort: 8080
+              name: backend-port
+          env:
+            - name: DB_URL
+              value: jdbc:mysql://poppin-db-svc.poppin-dev.svc.cluster.local:3306/poppin
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: poppin-dev-config
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: poppin-dev-config
+                  key: DB_PASSWORD
+            - name: S3_ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: poppin-dev-config
+                  key: S3_ACCESS_KEY
+            - name: S3_SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: poppin-dev-config
+                  key: S3_SECRET_KEY
+            - name: S3_REGION_STATIC
+              value: ap-northeast-2
+            - name: S3_BUCKET
+              value: poppin
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poppin-backend-svc
+  namespace: poppin-dev
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /api/actuator/prometheus
+    prometheus.io/port: "8080"
+  labels:
+    type: backend
+    app: poppin-backend
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    type: backend
+    app: poppin-backend
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: poppin-backend-ingress
+  namespace: poppin-dev
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - poppin-dev.yanychoi.site
+      secretName: poppin-backend-tls
+  rules:
+    - host: poppin-dev.yanychoi.site
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: poppin-backend-svc
+                port:
+                  number: 8080
