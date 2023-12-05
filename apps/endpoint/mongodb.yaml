@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: poppin-common-apps
+  name: mongodb-endpoint
   namespace: argo-cd
   # Add a this finalizer ONLY if you want these to cascade delete.
   finalizers:
@@ -13,11 +13,18 @@ spec:
   source:
     repoURL: https://github.com/pop-pin/infrastructure.git
     targetRevision: HEAD
-    path: apps/common
+    path: charts/service-endpoint
+    helm:
+      valuesObject:
+        domain: mongodb.poppin.life
+        port: "443"
+        serviceName: mongodb
   
   destination:
     server: https://kubernetes.default.svc
-    # The namespace will only be set for namespace-scoped resources that have not set a value for .metadata.namespace
-    namespace: default
+    namespace: argo-cd
   
-  syncPolicy: {}
+  syncPolicy:
+    # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.  
+    syncOptions:
+      - CreateNamespace=false
