@@ -2,13 +2,17 @@ apiVersion: v1
 kind: Service
 metadata:
   name: poppin-db-svc
-  namespace: poppin-dev
+  namespace: poppin
   labels:
     type: db
     app: poppin-db
 spec:
   ports:
-    - port: 3306
+    - name: db-port
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+      appProtocol: tcp
   selector:
     type: db
     app: poppin-db
@@ -19,7 +23,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: poppin-db
-  namespace: poppin-dev
+  namespace: poppin
   labels:
     type: db
     app: poppin-db
@@ -45,21 +49,18 @@ spec:
           volumeMounts:
             - name: poppin-db-pvc
               mountPath: /var/lib/mysql
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: poppin-dev-config
-                  key: DB_PASSWORD
-            - name: MYSQL_DATABASE
-              value: poppin
+          envFrom:
+            - secretRef:
+                name: poppin-db
+          securityContext:
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
   volumeClaimTemplates:
     - metadata:
         name: poppin-db-pvc
       spec:
-        accessModes:
-          - ReadWriteOnce
+        accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: 5Gi
-        storageClassName: nfs-client
+            storage: 20Gi
+        
