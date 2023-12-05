@@ -13,6 +13,9 @@ spec:
     repoURL: https://github.com/pop-pin/infrastructure.git
     targetRevision: HEAD
     path: charts/cert-manager
+    helm:
+      valuesObject:
+        installCRDs: true
   
   destination:
     server: https://kubernetes.default.svc

@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-issuer
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/pop-pin/infrastructure.git
+    targetRevision: HEAD
+    path: charts/cluster-issuer
+  
+  destination:
+    server: https://kubernetes.default.svc
