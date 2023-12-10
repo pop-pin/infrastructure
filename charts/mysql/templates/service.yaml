@@ -10,6 +10,6 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: 3306
       protocol: TCP
-      name: 3306
+      name: tcp
   selector:
     {{- include "mysql.selectorLabels" . | nindent 4 }}
