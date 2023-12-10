@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: poppin-dev-apps
+  name: poppin-apps
   namespace: argo-cd
   # Add a this finalizer ONLY if you want these to cascade delete.
   finalizers:
@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://github.com/pop-pin/infrastructure.git
     targetRevision: HEAD
-    path: apps/dev
+    path: apps/services
   
   destination:
     server: https://kubernetes.default.svc
