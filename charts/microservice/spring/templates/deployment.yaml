@@ -33,13 +33,9 @@ spec:
           env:
             - name: DB_URL
               value: {{ .Values.db.url }}
-            - name: DB_USERNAME
-              value: root
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.db.secretName }}
-                  key: MYSQL_ROOT_PASSWORD
+          envFrom:
+            - secretRef:
+                name: {{ .Values.db.secretName }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}

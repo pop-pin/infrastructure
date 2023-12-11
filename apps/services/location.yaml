@@ -28,7 +28,6 @@ spec:
           limits:
             memory: 1Gi
         db:
-          url: "jdbc:mysql://location-db-mysql.location-service.svc.cluster.local:3306/location"
           secretName: "location-secrets"
   
   destination:

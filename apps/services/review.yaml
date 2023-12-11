@@ -28,7 +28,7 @@ spec:
           limits:
             memory: 1Gi
         db:
-          url: "jdbc:mysql://review-db-mysql.review-service.svc.cluster.local:3306/review"
+          url: "review-db-mysql.review-service.svc.cluster.local:3306"
           secretName: "review-secrets"
   
   destination:
