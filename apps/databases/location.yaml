@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: location-db
+  namespace: argo-cd
+  # Add a this finalizer ONLY if you want these to cascade delete.
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/pop-pin/infrastructure.git
+    targetRevision: HEAD
+    path: charts/mysql
+    helm:
+      valuesObject:
+        service:
+          type: ClusterIP
+          port: 3306
+        secretName: location-secrets
+  
+  destination:
+    server: https://kubernetes.default.svc
+    # The namespace will only be set for namespace-scoped resources that have not set a value for .metadata.namespace
+    namespace: location-service
+  
+  syncPolicy:
+    # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.  
+    syncOptions:
+      - CreateNamespace=true
