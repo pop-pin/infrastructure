@@ -20,7 +20,7 @@ spec:
         image:
           repository: poppinteam/review-service
           pullPolicy: IfNotPresent
-          tag: "2eadf70"
+          tag: "f7a03ce"
         service:
           type: ClusterIP
           port: 8080
