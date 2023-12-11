@@ -28,4 +28,4 @@ resources: {}
 
 db:
   url: ""
-  password: ""
+  secretName: ""

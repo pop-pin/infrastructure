@@ -28,7 +28,8 @@ spec:
           limits:
             memory: 1Gi
         db:
-          url: "jdbc:mysql://review-db-svc.review-service.svc.cluster.local:3306/review"
+          url: "jdbc:mysql://review-db-mysql.review-service.svc.cluster.local:3306/review"
+          secretName: "review-secrets"
   
   destination:
     server: https://kubernetes.default.svc

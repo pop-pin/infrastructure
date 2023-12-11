@@ -36,7 +36,10 @@ spec:
             - name: DB_USERNAME
               value: root
             - name: DB_PASSWORD
-              value: "{{ .Values.db.password }}"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: MYSQL_ROOT_PASSWORD
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
