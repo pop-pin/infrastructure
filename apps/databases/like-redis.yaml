@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: like-redis
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/pop-pin/infrastructure.git
+    targetRevision: HEAD
+    path: charts/redis
+    helm:
+      valuesObject:
+        auth:
+          enabled: true
+          password: "rkcjseo123!"
+        master:
+          resources:
+            limits:
+              memory: 1Gi
+        replica:
+          replicaCount: 1
+          resources:
+            limits:
+              memory: 1Gi
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: like-service
+  
+  syncPolicy:
+    # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.  
+    syncOptions:
+      - CreateNamespace=true

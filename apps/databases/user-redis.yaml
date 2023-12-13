@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: redis
+  name: user-redis
   namespace: argo-cd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -16,7 +16,8 @@ spec:
     helm:
       valuesObject:
         auth:
-          password: rkcjseo123!
+          enabled: true
+          password: "rkcjseo123!"
         master:
           resources:
             limits:
@@ -29,7 +30,7 @@ spec:
   
   destination:
     server: https://kubernetes.default.svc
-    namespace: redis
+    namespace: user-service
   
   syncPolicy:
     # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.  
