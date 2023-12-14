@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: review-service-endpoint
+  namespace: argo-cd
+  # Add a this finalizer ONLY if you want these to cascade delete.
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/pop-pin/infrastructure.git
+    targetRevision: HEAD
+    path: charts/service-endpoint
+    helm:
+      valuesObject:
+        domain: review.api.poppin.life
+        port: "8080"
+        serviceName: review-service-spring
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: review-service
+  
+  syncPolicy:
+    # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.  
+    syncOptions:
+      - CreateNamespace=false
