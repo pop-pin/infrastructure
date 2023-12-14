@@ -20,6 +20,16 @@ spec:
           type: ClusterIP
           port: 3306
         secretName: user-secrets
+        initSchema: |
+          CREATE TABLE user (
+            user_id bigint NOT NULL AUTO_INCREMENT,
+            email varchar(255) NOT NULL,
+            role varchar(255) NOT NULL,
+            username varchar(255) DEFAULT NULL,
+            usernumber varchar(255) NOT NULL,
+            PRIMARY KEY (user_id),
+            UNIQUE KEY UK_ob8kqyqqgmefl0aco34akdtpe (email)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
   
   destination:
     server: https://kubernetes.default.svc

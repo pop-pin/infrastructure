@@ -20,6 +20,18 @@ spec:
           type: ClusterIP
           port: 3306
         secretName: review-secrets
+        initSchema: |
+          CREATE TABLE review (
+            rating int DEFAULT NULL,
+            created_at datetime(6) DEFAULT NULL,
+            location_id bigint DEFAULT NULL,
+            review_id bigint NOT NULL AUTO_INCREMENT,
+            updated_at datetime(6) DEFAULT NULL,
+            user_id bigint DEFAULT NULL,
+            text varchar(255) DEFAULT NULL,
+            title varchar(255) DEFAULT NULL,
+            PRIMARY KEY (review_id)
+          ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
   
   destination:
     server: https://kubernetes.default.svc

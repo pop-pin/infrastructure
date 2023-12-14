@@ -20,6 +20,20 @@ spec:
           type: ClusterIP
           port: 3306
         secretName: like-secrets
+        initSchema: |
+          CREATE TABLE location_like (
+            like_count int NOT NULL,
+            location_id bigint NOT NULL,
+            locationlike_id bigint NOT NULL AUTO_INCREMENT,
+            PRIMARY KEY (locationlike_id)
+          ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+          CREATE TABLE user_like (
+            location_id bigint NOT NULL,
+            user_id bigint NOT NULL,
+            userlike_id bigint NOT NULL AUTO_INCREMENT,
+            PRIMARY KEY (userlike_id)
+          ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
   
   destination:
     server: https://kubernetes.default.svc
