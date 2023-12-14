@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: spring
-          image: "poppinteam/gateway:2ae167f"
+          image: "poppinteam/gateway:5376b70"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
