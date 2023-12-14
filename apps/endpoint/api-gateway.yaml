@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: api-gateway-endpoint
+  namespace: argo-cd
+  # Add a this finalizer ONLY if you want these to cascade delete.
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/pop-pin/infrastructure.git
+    targetRevision: HEAD
+    path: charts/service-endpoint
+    helm:
+      valuesObject:
+        domain: api.poppin.life
+        port: "8080"
+        serviceName: api-gateway
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: api-gateway
+  
+  syncPolicy:
+    # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.  
+    syncOptions:
+      - CreateNamespace=false
