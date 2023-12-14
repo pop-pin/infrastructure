@@ -20,7 +20,7 @@ spec:
         image:
           repository: poppinteam/like-service
           pullPolicy: IfNotPresent
-          tag: "8065379"
+          tag: "c41a122"
         service:
           type: ClusterIP
           port: 8080
