@@ -15,15 +15,11 @@ spec:
     path: charts/redis
     helm:
       valuesObject:
+        architecture: standalone
         auth:
           enabled: true
           password: "rkcjseo123!"
         master:
-          resources:
-            limits:
-              memory: 1Gi
-        replica:
-          replicaCount: 1
           resources:
             limits:
               memory: 1Gi
