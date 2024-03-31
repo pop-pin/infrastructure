@@ -20,7 +20,7 @@ spec:
         image:
           repository: poppinteam/location-service
           pullPolicy: IfNotPresent
-          tag: "3905b0a"
+          tag: "1185f74"
         service:
           type: ClusterIP
           port: 8080
