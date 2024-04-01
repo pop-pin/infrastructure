@@ -26,7 +26,9 @@ spec:
           port: 8080
         resources:
           limits:
-            memory: 1Gi
+            memory: 3Gi
+          requests:
+            memory: 3Gi
         db:
           secretName: "location-secrets"
   
