@@ -18,9 +18,8 @@ spec:
       valuesObject:
         auth:
           enabled: true
-          rootPassword: rkcjseo123!
+          existingSecret: poppin-secrets
           username: poppin
-          password: rkcjseo123!
           database: location
         
   
