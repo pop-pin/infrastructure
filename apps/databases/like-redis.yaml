@@ -18,11 +18,11 @@ spec:
         architecture: standalone
         auth:
           enabled: true
-          password: "rkcjseo123!"
+          existingSecret: like-secrets
         master:
           resources:
             limits:
-              memory: 1Gi
+              memory: 4Gi
   
   destination:
     server: https://kubernetes.default.svc
